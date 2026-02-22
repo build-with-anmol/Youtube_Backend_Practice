@@ -5,7 +5,7 @@ import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 const videoSchema = new Schema(
   {
     videoFile: {
-      type: String, // We are using cloudinary to store the images
+      type: String, // We are using cloudinary to store the images url
       required: true,
     },
     thumbnail: {
