@@ -23,4 +23,17 @@ app.use(cookieParser());  // Using this we can access the cookies and use this c
 //   origin: 'http://example.com',
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // } 
+
+
+// Routes Import  
+import userRouter from "./routes/user.routes.js"; 
+
+// Routes Declaration -- In this part we will declare all the routes 
+app.use("/api/v1/users" , userRouter);  
+
+
+// ex -- http://localhost:8000/api/v1/users/register
+
+
+
 export default app;
