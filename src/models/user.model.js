@@ -57,7 +57,7 @@ userSchema.pre("save", async function (next) {
 
   // If password is modified then hash the password
 
-  this.password = bcrypt.hashSync(this.password, 10);
+  this.password = await bcrypt.hashSync(this.password, 10);
   next();
 });
 
