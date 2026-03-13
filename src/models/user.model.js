@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
   {
-    userName: {
+    username: {
       type: String,
       required: true,
       unique: true,
@@ -29,8 +29,8 @@ const userSchema = new Schema(
       type: String, // We are using cloudinary to store the images
       required: true,
     },
-    avatar: {
-      type: String, // We are using cloudinary to store the images
+    coverImage: {
+      type: String, // cloudinary url
     },
     watchHistory: [
       {
@@ -51,14 +51,26 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.pre("save", async function (next) {
-  // If password is not modified then skip this function
-  if (!this.isModified("password")) return next();
+// userSchema.pre("save", async function (next) {
+//   // If password is not modified then skip this function
 
-  // If password is modified then hash the password
+//   console.log(next);
+//   console.log( "password======" , this.password );
 
-  this.password = await bcrypt.hashSync(this.password, 10);
-  next();
+//   if (!this.isModified("password")) return next();
+
+//   // If password is modified then hash the password
+//   this.password = await bcrypt.hash(this.password, 10);
+
+//   next();
+// });
+
+userSchema.pre("save", async function () {
+  // If password not modified skip hashing
+  if (!this.isModified("password")) return;
+
+  // Hash password
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
 userSchema.methods.isPasswordMatched = async function (password) {
@@ -70,7 +82,7 @@ userSchema.methods.generateAccessToken = function () {
     {
       _id: this._id,
       email: this.email,
-      userName: this.userName,
+      username: this.username,
       fullName: this.fullName,
     },
     process.env.ACCESS_TOKEN_SECRET,
@@ -84,11 +96,10 @@ userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
       _id: this._id,
-      
     },
     process.env.REFRESH_TOKEN_SECRET,
     {
-     expiresIn: process.env.REFRESH_TOKEN_EXPIRY || "10d",
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY || "10d",
     }
   );
 };
