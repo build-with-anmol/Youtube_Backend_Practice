@@ -88,7 +88,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // if img available then upload in cloudinary  -- get url
 
   const avatar = await uploadOnCloudinary(avatarLocalPath);
-  const coverImage = await uploadOnCloudinary(avatarLocalPath);
+  const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
   //   let coverImage = null;
   //   if (coverImageLocalPath) {

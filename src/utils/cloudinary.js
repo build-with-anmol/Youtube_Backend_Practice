@@ -18,14 +18,15 @@ const uploadOnCloudinary = async (localFilePath) => {
     });
 
     // delete file after upload
-    if (fs.existsSync(localFilePath)) {
+    if (localFilePath && fs.existsSync(localFilePath)) {
       fs.unlinkSync(localFilePath);
     }
     return response;
   } catch (error) {
     console.log("File is not uploaded on cloudinary", error);
 
-    if (localFilePath) {
+    // ✅ Fixed: use localFilePath, not path
+    if (localFilePath && fs.existsSync(localFilePath)) {
       fs.unlinkSync(localFilePath);
     }
 
